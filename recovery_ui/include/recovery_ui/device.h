@@ -39,6 +39,8 @@ class Device {
   static constexpr const int kGoBack = -5;
   static constexpr const int kGoHome = -6;
   static constexpr const int kDoSideload = -7;
+  static constexpr const int kScrollUp = -8;
+  static constexpr const int kScrollDown = -9;
 
   // ENTER vs REBOOT: The latter will trigger a reboot that goes through bootloader, which allows
   // using a new bootloader / recovery image if applicable. For example, REBOOT_RESCUE goes from
@@ -67,6 +69,10 @@ class Device {
     REBOOT_RESCUE = 19,
     REBOOT_FROM_FASTBOOT = 20,
     SHUTDOWN_FROM_FASTBOOT = 21,
+    MENU_BASE = 200,
+    MENU_UPDATE = 201,
+    MENU_WIPE = 202,
+    MENU_ADVANCED = 203,
   };
 
   explicit Device(RecoveryUI* ui);
@@ -116,9 +122,15 @@ class Device {
   //   - invoke a specific action (a menu position: non-negative value)
   virtual int HandleMenuKey(int key, bool visible);
 
-  // Returns the list of menu items (a vector of strings). The menu_position passed to
-  // InvokeMenuItem() will correspond to the indexes into this array.
+  // Returns the list of the currently visible menu items (a vector of strings).
+  // The menu_position passed to InvokeMenuItem() will correspond to the indexes into this array.
   virtual const std::vector<std::string>& GetMenuItems();
+
+  // Returns headers for the currently visible menu. Can be empty vector.
+  virtual const std::vector<std::string>& GetMenuHeaders();
+
+  // Return to the main menu
+  virtual void GoHome();
 
   // Performs a recovery action selected from the menu. 'menu_position' will be the index of the
   // selected menu item, or a non-negative value returned from HandleMenuKey(). The menu will be
