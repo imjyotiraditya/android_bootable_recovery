@@ -496,7 +496,7 @@ int main(int argc, char** argv) {
       }
     }
 
-    ui->SetEnableFastbootdLogo(false);
+    ui->SetEnableFastbootdLogo(fastboot);
 
     auto ret = fastboot ? StartFastboot(device, args) : start_recovery(device, args);
 

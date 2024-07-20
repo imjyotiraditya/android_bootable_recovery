@@ -724,6 +724,14 @@ void ScreenRecoveryUI::draw_menu_and_text_buffer_locked(
     y += height;
   }
 
+  if (aospa_logo_) {
+    auto width = gr_get_width(aospa_logo_.get());
+    auto height = gr_get_height(aospa_logo_.get());
+    auto centered_x = ScreenWidth() / 2 - width / 2;
+    DrawSurface(aospa_logo_.get(), 0, 0, width, height, centered_x, y);
+    y += height;
+  }
+
   if (menu_) {
     int x = margin_width_ + kMenuIndent;
 
@@ -942,6 +950,7 @@ bool ScreenRecoveryUI::Init(const std::string& locale) {
   no_command_text_ = LoadLocalizedBitmap("no_command_text");
   error_text_ = LoadLocalizedBitmap("error_text");
 
+  aospa_logo_ = LoadBitmap("aospa");
   if (android::base::GetBoolProperty("ro.boot.dynamic_partitions", false)) {
     fastbootd_logo_ = LoadBitmap("fastbootd");
   }
